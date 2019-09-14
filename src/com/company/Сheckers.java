@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 
-public class Сheckers {
+public class Сheckers{
 
     private static final int BLACK_PLAYER = 1;
     private static final int WHITE_PLAYER = 2;
@@ -20,13 +20,6 @@ public class Сheckers {
 
 
 
-
-
-    /*2,1,3,0
-     *5,2,4,1
-     * 1,2,2,1
-     */
-
     public Сheckers(){
         addPlayer(0,3, player_W,WHITE_PLAYER);
         addPlayer(5,8, player_B,BLACK_PLAYER);
@@ -34,7 +27,14 @@ public class Сheckers {
         Scanner scanner = new Scanner(System.in);
 
         while (player_W.size()!=0 && player_B.size()!=0){ //реализация в консоли
+            System.out.println("turn: "+turn);
+            System.out.print(" ");
             for (int i = 0; i < 8; i++) {
+                System.out.print("."+i);
+            }
+            System.out.println();
+            for (int i = 0; i < 8; i++) {
+                System.out.print(i+":");
                 for (int j = 0; j < 8; j++) {
                     System.out.print(field[i][j]+" ");
                 }
@@ -46,8 +46,7 @@ public class Сheckers {
                     str.split("[-(,)+_>]+")) {
                 list.add(Integer.parseInt(s));
             }
-            doStep(list.get(0),list.get(1),list.get(2),list.get(3));
-
+            doStep(list.get(1),list.get(0),list.get(3),list.get(2));
         }
 
 
@@ -61,14 +60,15 @@ public class Сheckers {
                 move(checker, xTo, yTo);
                 for (Checker c:
                      getAllWhoCanEat(turn)) { //если была возможность съесть фишку противника какой либо своей, то эти фишки выйдут из игры
-                    System.out.println(c.toString());
                     field[c.getX()][c.getY()]=NO_PLAYER;
                     player.remove(c);
                 }
                 turn =3- turn;
             } else if (canEat(checker, xTo, yTo)) {
                 eat(checker, xTo, yTo);
-                turn =3- turn;
+                if(!canEat(checker)) {
+                    turn = 3 - turn;
+                }
             }
         }
     }
@@ -119,7 +119,7 @@ public class Сheckers {
         int yDir = getDirection(checker.getY(),yTo);
 
         if (checker.isQueen()) {
-            return (canMove(checker, xTo - xDir * 2, yTo - yDir * 2)                           //проверяем, может ли королева пройти расстояние до убиваемой фишкиб есть ли она и есть ли свободная клетка после
+            return (canMove(checker, xTo - xDir * 2, yTo - yDir * 2)//проверяем, может ли королева пройти расстояние до убиваемой фишкиб есть ли она и есть ли свободная клетка после
                     && field[xTo - xDir][yTo - yDir] == 3- turn && field[xTo][yTo] == NO_PLAYER);
         }else {
             return ((xTo- checker.getX())*xDir==2&& (yTo- checker.getY())*yDir==2 &&
@@ -192,7 +192,7 @@ public class Сheckers {
 
 
     private List<Checker> getAllWhoCanEat(int color){
-        return getPlayer(color).stream().filter(checker -> canEat(checker)).collect(Collectors.toList());
+        return getPlayer(color).stream().filter(checker -> canEat(checker)).collect(Collectors.toList());//собирает все фишки, которые могут побить
     }
 
 
