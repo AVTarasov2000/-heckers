@@ -16,14 +16,15 @@ public class Сheckers {
     private java.util.List<Checker> player_W = new ArrayList<>();
     private java.util.List<Checker> player_B = new ArrayList<>();
     private int[][] field = new int[8][8];
-    private int turne = 2;
+    private int turn = 2;
+
+
+
 
 
     /*2,1,3,0
      *5,2,4,1
      * 1,2,2,1
-     *
-     *
      */
 
     public Сheckers(){
@@ -53,21 +54,21 @@ public class Сheckers {
     }
 
     public void doStep(int xFrom, int yFrom, int xTo,int yTo){
-        if(turne==field[xFrom][yFrom]) {
-            java.util.List<Checker> player = getPlayer(turne);
+        if(turn ==field[xFrom][yFrom]) {
+            java.util.List<Checker> player = getPlayer(turn);
             Checker checker = getClip(player,xFrom,yFrom);
             if (canMove(checker, xTo, yTo)) {
                 move(checker, xTo, yTo);
                 for (Checker c:
-                     getAllWhoCanEat(turne)) { //если была возможность съесть фишку противника какой либо своей, то эти фишки выйдут из игры
+                     getAllWhoCanEat(turn)) { //если была возможность съесть фишку противника какой либо своей, то эти фишки выйдут из игры
                     System.out.println(c.toString());
                     field[c.getX()][c.getY()]=NO_PLAYER;
                     player.remove(c);
                 }
-                turne=3-turne;
+                turn =3- turn;
             } else if (canEat(checker, xTo, yTo)) {
                 eat(checker, xTo, yTo);
-                turne=3-turne;
+                turn =3- turn;
             }
         }
     }
@@ -119,10 +120,10 @@ public class Сheckers {
 
         if (checker.isQueen()) {
             return (canMove(checker, xTo - xDir * 2, yTo - yDir * 2)                           //проверяем, может ли королева пройти расстояние до убиваемой фишкиб есть ли она и есть ли свободная клетка после
-                    && field[xTo - xDir][yTo - yDir] == 3-turne && field[xTo][yTo] == NO_PLAYER);
+                    && field[xTo - xDir][yTo - yDir] == 3- turn && field[xTo][yTo] == NO_PLAYER);
         }else {
             return ((xTo- checker.getX())*xDir==2&& (yTo- checker.getY())*yDir==2 &&
-                    field[xTo - xDir][yTo - yDir] == 3-turne && field[xTo][yTo] == NO_PLAYER);
+                    field[xTo - xDir][yTo - yDir] == 3- turn && field[xTo][yTo] == NO_PLAYER);
         }
     }
 
