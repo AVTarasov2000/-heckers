@@ -1,15 +1,59 @@
 package com.company;
 
-import javax.sound.sampled.Clip;
+
+import com.company.field.Cell;
+
 
 public class Checker {
 
 
     private Cell cell;
+    private boolean isWhite;
+
+    private void goUpRight(){
+        cell.setChecker(null);
+        cell=cell.getUpRight();
+        cell.setChecker(this);
+    }
+
+    private void goUpLeft(){
+        cell.setChecker(null);
+        cell=cell.getUpLeft();
+        cell.setChecker(this);
+    }
+
+    private void goDownRight(){
+        cell.setChecker(null);
+        cell=cell.getDownRight();
+        cell.setChecker(this);
+    }
+
+    private void goDownLeft(){
+        cell.setChecker(null);
+        cell=cell.getDownLeft();
+        cell.setChecker(this);
+    }
+
+    public Cell getCell() {
+        return cell;
+    }
+
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
+
+
+
+
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
+
     private int x;
     private int y;
     private boolean isQueen=false;
-    private boolean isWhite;
+
 
     public int getX() {
         return x;
@@ -29,13 +73,7 @@ public class Checker {
         this.isWhite = isWhite;
     }
 
-    public Cell getCell() {
-        return cell;
-    }
 
-    public void setCell(Cell cell) {
-        this.cell = cell;
-    }
 
     public void goTo(int x, int y){
 
