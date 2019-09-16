@@ -52,6 +52,16 @@ public class Сheckers{
 
     }
 
+
+
+    /*
+    поле-реализовано с помощью двусвязного списка(отдельный класс) граф
+    класс королевы унаследованный от фишки
+    класс игрока
+     */
+
+
+
     public void doStep(int xFrom, int yFrom, int xTo,int yTo){
         if(turn ==field[xFrom][yFrom]) {
             java.util.List<Checker> player = getPlayer(turn);

@@ -1,7 +1,11 @@
 package com.company;
 
+import javax.sound.sampled.Clip;
+
 public class Checker {
 
+
+    Cell cell;
     private int x;
     private int y;
     private boolean isQueen=false;
@@ -26,6 +30,7 @@ public class Checker {
     }
 
     public void goTo(int x, int y){
+
         this.x=x;
         this.y=y;
         if(isWhite){
