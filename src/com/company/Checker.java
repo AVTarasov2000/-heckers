@@ -5,7 +5,7 @@ import javax.sound.sampled.Clip;
 public class Checker {
 
 
-    Cell cell;
+    private Cell cell;
     private int x;
     private int y;
     private boolean isQueen=false;
@@ -27,6 +27,14 @@ public class Checker {
         this.x=x;
         this.y=y;
         this.isWhite = isWhite;
+    }
+
+    public Cell getCell() {
+        return cell;
+    }
+
+    public void setCell(Cell cell) {
+        this.cell = cell;
     }
 
     public void goTo(int x, int y){
