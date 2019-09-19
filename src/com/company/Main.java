@@ -11,5 +11,8 @@ public class Main{
 
 //        Сheckers sh = new Сheckers();
         Field field = new Field();
+        field.getChecker(1,2).goRight();
+        System.out.println();
+        field.print();
     }
 }

@@ -1,38 +1,21 @@
 package com.company.field;
 
-import com.company.Checker;
+import com.company.checkers.Checker;
 
 public class Cell{
-
-    public static final int UP_RIGHT = 0;
-    public static final int DOWN_RIGHT = 1;
-    public static final int DOWN_LEFT = 2;
-    public static final int UP_LEFT = 3;
 
     private Cell downLeft;
     private Cell downRight;
     private Cell upLeft;
     private Cell upRight;
 
-    private Checker checker;
+    private Checker checker = null;
 
-
-
-    public Cell(Cell downLeft, Cell downRight, Cell upLeft, Cell upRight){
-        this.downRight=downRight;
-        this.downLeft=downLeft;
-        this.upLeft=upLeft;
-        this.upRight=upRight;
-    }
-
-    public Cell(){
-    }
-
-    public void setAll(Cell downLeft, Cell downRight, Cell upLeft, Cell upRight){
-        this.downRight=downRight;
-        this.downLeft=downLeft;
-        this.upLeft=upLeft;
-        this.upRight=upRight;
+    public void setAll(Cell downLeft, Cell downRight, Cell upLeft, Cell upRight) {
+        this.downLeft = downLeft;
+        this.downRight = downRight;
+        this.upLeft = upLeft;
+        this.upRight = upRight;
     }
 
     public Checker getChecker() {
@@ -75,6 +58,7 @@ public class Cell{
         this.upRight = upRight;
     }
 
+    public boolean isFree(){return checker == null;}
 
 
 
