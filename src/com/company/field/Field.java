@@ -1,10 +1,10 @@
 package com.company.field;
 
 import com.company.checkers.Checker;
+import com.company.checkers.Queen;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 public class Field {
 
@@ -13,68 +13,82 @@ public class Field {
     private Map<String,Cell> field = new HashMap <>();
     private int size = 8;
 
+    public static String stringKey(int x, int y){
+        return x+" "+y;
+    }
+
+    public Map <String, Cell> getField() {
+        return field;
+    }
 
     public Field(){
-
         setField();
-        print();
-
     }
 
 
     private void setField(){
-
-
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) { // создаются все клетки
             for (int j = 0; j < size; j++){
                 if((i+j)%2!=0) {
-                    field.put(i + "" + j, new Cell());
+                    if(j==0){
+                        field.put(stringKey(i,j), new TransformCell(false));
+                    }
+                    else if (j==size-1){
+                        field.put(stringKey(i,j), new TransformCell(true));
+                    }
+                    else {
+                        field.put(stringKey(i,j), new Cell());
+                    }
                 }
             }
         }
-
         Cell cell;
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) { // задаются связи в клетках
             for (int j = 0; j < size; j++) {
                 if((i+j)%2!=0) {
-                    cell = field.get(i + "" + j);
-                    cell.setAll(field.getOrDefault((i - 1) + "" + (j - 1), null),//downLeft
-                                field.getOrDefault((i + 1) + "" + (j - 1), null),//downRight
-                                field.getOrDefault((i - 1) + "" + (j + 1), null),//upLeft
-                                field.getOrDefault((i + 1) + "" + (j + 1), null));//upRight
-                    if(j < 3){
-                        cell.setChecker(new Checker(cell,true));
-                        System.out.println(i + "" + j);
-                    }
-                    if (j>=size-3){
-                        cell.setChecker(new Checker(cell,false));
-                        System.out.println(i + "" + j);
-                    }
-
+                    cell = field.get(stringKey(i,j));
+                    cell.setAll(field.getOrDefault(stringKey(i-1,j-1), null),//downLeft
+                                field.getOrDefault(stringKey(i+1,j-1), null),//downRight
+                                field.getOrDefault(stringKey(i-1,j+1), null),//upLeft
+                                field.getOrDefault(stringKey(i+1,j+1), null));//upRight
                 }
             }
         }
     }
 
 
-
-
-
-
-
-    public Checker getChecker(int x,int y) {
-        return field.get(x+""+y).getChecker();
-
+    public int getSize() {
+        return size;
     }
+
+    public Checker getChecker(String cellName) {
+        return field.get(cellName).getChecker();
+    }
+
+
+    public Cell getCell(String cellName){
+        return field.get(cellName);
+    }
+
+
     public void print(){
-        for (int j = 0; j < size; j++) {
+        System.out.print("  ");
+        for (int i = 0; i < size; i++) {
+            System.out.print("."+i);
+        }
+        System.out.println();
+        for (int j = size-1; j >=0; j--) {
+            System.out.print(j+": ");
             for (int i = 0; i < size; i++) {
                 if((i+j)%2!=0) {
+                    int ad = (field.get(stringKey(i,j)).getChecker() instanceof Queen)?2:0;
                     if (j % 2 == 0) {
-                        System.out.print(0 + " " + (field.get(i + "" + j).getChecker()!=null?1:0) + " ");
+                        System.out.print(0 + " " + (field.get(stringKey(i,j)).getChecker()
+                                !=null?(field.get(i + " " + j).getChecker().isWhite()?1+ad:2+ad):0) + " ");
 
                     } else {
-                        System.out.print((field.get(i + "" + j).getChecker()!=null?1:0) + " " + 0 + " ");
+                        System.out.print((field.get(stringKey(i,j)).getChecker()
+                                !=null?(field.get(stringKey(i,j)).getChecker().isWhite()?1+ad:2+ad):0) + " " + 0 + " ");
                     }
                 }
             }
@@ -83,22 +97,6 @@ public class Field {
     }
 
 
-    private int count(Cell cell){
-        int i = 0;
-        if (cell.getUpLeft()!=null){
-            i++;
-        }
-        if (cell.getUpRight()!=null){
-            i++;
-        }
-        if (cell.getDownLeft()!=null){
-            i++;
-        }
-        if (cell.getDownRight()!=null){
-            i++;
-        }
-        return i;
-    }
 
 
 

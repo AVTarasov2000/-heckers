@@ -2,20 +2,25 @@ package com.company.field;
 
 import com.company.checkers.Checker;
 
+import java.util.ArrayList;
+
 public class Cell{
 
-    private Cell downLeft;
-    private Cell downRight;
-    private Cell upLeft;
-    private Cell upRight;
+    public static final int UP_RIGHT = 0;
+    public static final int UP_LEFT = 1;
+    public static final int DOWN_RIGHT = 2;
+    public static final int DOWN_LEFT = 3;
+
+    private Cell[] cells = {null, null, null, null};
 
     private Checker checker = null;
 
     public void setAll(Cell downLeft, Cell downRight, Cell upLeft, Cell upRight) {
-        this.downLeft = downLeft;
-        this.downRight = downRight;
-        this.upLeft = upLeft;
-        this.upRight = upRight;
+        cells[UP_RIGHT] = upRight;
+        cells[UP_LEFT] = upLeft;
+        cells[DOWN_RIGHT] = downRight;
+        cells[DOWN_LEFT] = downLeft;
+
     }
 
     public Checker getChecker() {
@@ -26,39 +31,36 @@ public class Cell{
         this.checker = checker;
     }
 
-    public Cell getDownLeft() {
-        return downLeft;
-    }
-
-    public void setDownLeft(Cell downLeft) {
-        this.downLeft = downLeft;
-    }
-
-    public Cell getDownRight() {
-        return downRight;
-    }
-
-    public void setDownRight(Cell downRight) {
-        this.downRight = downRight;
-    }
-
-    public Cell getUpLeft() {
-        return upLeft;
-    }
-
-    public void setUpLeft(Cell upLeft) {
-        this.upLeft = upLeft;
-    }
-
-    public Cell getUpRight() {
-        return upRight;
-    }
-
-    public void setUpRight(Cell upRight) {
-        this.upRight = upRight;
+    public Cell getCellFromDirection(int direction){
+        return cells[direction];
     }
 
     public boolean isFree(){return checker == null;}
+
+
+
+    public int getDirection(Cell cell){
+        for (int i = 0; i < cells.length; i++) {
+            if (cell!= null && cells[i]!=null && cell.equals(cells[i])){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+    public ArrayList<Cell> getAllByDirection(int direction){
+        Cell cell = getCellFromDirection(direction);
+        ArrayList<Cell> cells = new ArrayList <>();
+        while (cell!=null){
+            cells.add(cell);
+            cell = cell.getCellFromDirection(direction);
+        }
+        return cells;
+    }
+
+
+
 
 
 
