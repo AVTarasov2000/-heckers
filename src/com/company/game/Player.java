@@ -6,43 +6,57 @@ import com.company.field.Cell;
 import com.company.field.Field;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Player{
 
     private String name;
-    private int turn;
     private ArrayList<Checker> checkers;
+    private Player next;
 
+    private ArrayList<Integer> directionsToGo = new ArrayList <>();
 
-
-    Player(String name, ArrayList <Checker> checkers, int turn){
+    Player(String name, ArrayList <Checker> checkers, Integer... directions){
         checkers.forEach(checker -> checker.setPlayer(this));
         this.name=name;
-        this.turn=turn;
         this.checkers=checkers;
+        directionsToGo.addAll(Arrays.asList(directions));
     }
 
 
 
-    public int getTurn(){
-        return turn;
+    public ArrayList <Integer> getDirectionsToGo() {
+        return directionsToGo;
     }
 
-    public void addChecker(Checker checker){
-        checkers.add(checker);
+    public Player getNext() {
+        return next;
+    }
+
+    public void setNext(Player next) {
+        this.next = next;
     }
 
     String getName(){
         return name;
     }
 
-    boolean contains(Checker checker){
+    public void addChecker(Checker checker){
+        checkers.add(checker);
+    }
+
+    public boolean contains(Checker checker){
         return checkers.contains(checker);
     }
 
     public void remove(Checker checker){
         checkers.remove(checker);
     }
+
+    public boolean canGo(int i){
+        return directionsToGo.contains(i);
+    }
+
 
 
     ArrayList<Checker> cantMove(){
@@ -129,5 +143,19 @@ public class Player{
         }
         return true;
     }
+
+    public boolean isTransformCellForThisPlayer(Cell cell){
+        for (int dir :
+                directionsToGo) {
+            if (cell.getCellFromDirection(dir) != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+
 
 }

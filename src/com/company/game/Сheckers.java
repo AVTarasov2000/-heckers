@@ -9,62 +9,61 @@ import com.company.field.Field;
 
 
 public class Сheckers {
-    private int turn = 1;
+//    private int turn = 1;
     private Field field = new Field();
 
     private Player blackPlayer;
     private Player whitePlayer;
-
+    private Turn turn;
 
     public Field getField() {
         return field;
     }
 
     public Сheckers(String firstPlayer, String secondPlayer){
-        whitePlayer = new Player(firstPlayer,Player.setPlayer(true, field),1);
-        blackPlayer = new Player(secondPlayer,Player.setPlayer(false, field),2);
+        whitePlayer = new Player(firstPlayer,Player.setPlayer(true, field),Cell.UP_LEFT, Cell.UP_RIGHT);
+        blackPlayer = new Player(secondPlayer,Player.setPlayer(false, field), Cell.DOWN_LEFT, Cell.DOWN_RIGHT);
+        turn = new Turn(whitePlayer,blackPlayer);
     }
 
     public Сheckers(String firstPlayer, String secondPlayer, boolean forOneChecker){//для проверки работы
-        whitePlayer = new Player(firstPlayer,Player.setPlayerWithOneChecker(true, field),1);
-        blackPlayer = new Player(secondPlayer,Player.setPlayerWithOneChecker(false, field),2);
+        whitePlayer = new Player(firstPlayer,Player.setPlayerWithOneChecker(true, field),Cell.UP_LEFT, Cell.UP_RIGHT);
+        blackPlayer = new Player(secondPlayer,Player.setPlayerWithOneChecker(false, field), Cell.DOWN_LEFT, Cell.DOWN_RIGHT);
+        turn = new Turn(whitePlayer,blackPlayer);
     }
-    private void switchTurn(){
-        turn = 3-turn;
-    }
+
 
 
     public void doStep(String checker, String to){
         Checker checker1 = field.getChecker(checker);
         Cell cellTo = field.getCell(to);
-        Player player = getPlayer(turn);
 
-        if (cellTo.isFree() && !player.canOnlyBit().contains(checker1)){
-            if(!getPlayer(turn).contains(checker1) || player.cantMove().contains(checker1)){
+        if (checker1==null){
+            return;
+        }
+
+        if (cellTo.isFree() && !turn.getPlayer().canOnlyBit().contains(checker1)){
+            if(!turn.getPlayer().contains(checker1) || turn.getPlayer().cantMove().contains(checker1)){
                 return;
             }
             if (checker1.canGoTo(cellTo)){
                 checker1.goTo(cellTo);
-                switchTurn();
+                turn.switchTurn();
             }
-        }else if(!cellTo.isFree()){
-            Checker checker2 = cellTo.getChecker();
-            if (checker1 != null && checker2 != null && checker1.canBit(checker2)) {
-                checker1.bit(checker2);
-                switchTurn();
-            }
+        }else if(checker1.canBit(cellTo)){
+                checker1.bit(cellTo);
+                if(!checker1.canBitAnything()) {
+                    turn.switchTurn();
+                }
         }
     }
 
 
     public String checkEnd(){
-        if(getPlayer(turn).isLose()){
-            return getPlayer(3-turn).getName();
+        if(turn.getPlayer().isLose()){
+            turn.switchTurn();
+            return turn.getPlayer().getName();
         }
         return null;
-    }
-
-    private Player getPlayer(int turn){
-        return turn==whitePlayer.getTurn()?whitePlayer:blackPlayer;
     }
 }

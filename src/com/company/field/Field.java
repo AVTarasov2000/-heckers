@@ -25,18 +25,24 @@ public class Field {
         setField();
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public Checker getChecker(String cellName) {
+        return field.get(cellName).getChecker();
+    }
+    public Cell getCell(String cellName){
+        return field.get(cellName);
+    }
 
     private void setField(){
         for (int i = 0; i < size; i++) { // создаются все клетки
             for (int j = 0; j < size; j++){
                 if((i+j)%2!=0) {
-                    if(j==0){
-                        field.put(stringKey(i,j), new TransformCell(false));
-                    }
-                    else if (j==size-1){
-                        field.put(stringKey(i,j), new TransformCell(true));
-                    }
-                    else {
+                    if(j==0 || j==size-1){
+                        field.put(stringKey(i,j), new TransformCell());
+                    }else {
                         field.put(stringKey(i,j), new Cell());
                     }
                 }
@@ -55,21 +61,6 @@ public class Field {
             }
         }
     }
-
-
-    public int getSize() {
-        return size;
-    }
-
-    public Checker getChecker(String cellName) {
-        return field.get(cellName).getChecker();
-    }
-
-
-    public Cell getCell(String cellName){
-        return field.get(cellName);
-    }
-
 
     public void print(){
         System.out.print("  ");
@@ -95,9 +86,5 @@ public class Field {
             System.out.println();
         }
     }
-
-
-
-
 
 }

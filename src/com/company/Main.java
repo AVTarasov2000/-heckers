@@ -111,12 +111,12 @@ public class Main{
         field.print();
         System.out.println();
 
-        System.out.println(i++);//11
-        System.out.println(sh.checkEnd());
-        sh.doStep("0 3","3 6");
-        System.out.println();
-        field.print();
-        System.out.println();
+//        System.out.println(i);//11
+//        System.out.println(sh.checkEnd());
+//        sh.doStep("0 3","3 6");
+//        System.out.println();
+//        field.print();
+//        System.out.println();
 
 
 

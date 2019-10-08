@@ -4,13 +4,16 @@ package com.company.checkers;
 import com.company.field.Cell;
 import com.company.game.Player;
 
+import java.util.ArrayList;
+
 public class Checker {
 
 
     private Cell cell;
     private boolean isWhite;
-    private Player player;
+    Player player;
 
+    // TODO: 05/10/2019 rewrite method bit and canBit
 
     public Checker(Cell cell, boolean isWhite){
         this.isWhite=isWhite;
@@ -22,12 +25,6 @@ public class Checker {
         this.player = player;
     }
 
-
-    public void goTo(Cell cell){
-        this.cell.setChecker(null);
-        this.cell = cell;
-        cell.setChecker(this);
-    }
 
     public boolean isWhite() {
         return isWhite;
@@ -42,34 +39,34 @@ public class Checker {
         this.cell = cell;
     }
 
+    public void goTo(Cell cell){
+        this.cell.setChecker(null);
+        this.cell = cell;
+        cell.setChecker(this);
+    }
+
     public boolean canGoTo(Cell cell){
         int dir = this.cell.getDirection(cell);
-        if(dir >= 0 && cell.isFree()){
-            return isWhite == (dir <= 1);
-        }
-        return false;
+        return player.canGo(dir);
     }
-
 
     public boolean canGoAnywhere(){
-        for (int i = 0; i < 4; i++) {
-            if (cell.getCellFromDirection(i)!=null
-                    && cell.getCellFromDirection(i).isFree()){
-                return true;
+            for (int i :
+                    player.getDirectionsToGo()) {
+                if (cell.getCellFromDirection(i) != null
+                        && cell.getCellFromDirection(i).isFree()) {
+                    return true;
+                }
             }
-        }
         return false;
     }
 
-
-
     public boolean canBitAnything(){
-        for (int i = 0; i < 4; i++) {
-            if(cell.getCellFromDirection(i)!=null
-                    && cell.getCellFromDirection(i).getCellFromDirection(i)!=null) {
-                if (cell.getCellFromDirection(i).getCellFromDirection(i).isFree()
-                        && !cell.getCellFromDirection(i).isFree()
-                        && player.getTurn()!=cell.getCellFromDirection(i).getChecker().player.getTurn()) {
+        for (int i = 0; i < cell.getCells().size(); i++) {
+            ArrayList<Cell> list = cell.getAllByDirection(i);
+
+            if (list.size()>2 && list.get(0)!=null && list.get(1)!=null){
+                if(!list.get(0).isFree() && list.get(1).isFree() && player.contains(list.get(0).getChecker())){//проверка на то, принадлежат ли они одному игроку
                     return true;
                 }
             }
@@ -80,28 +77,33 @@ public class Checker {
 
 
 
-    protected int directionToBit(Checker checker){
-        return cell.getDirection(checker.getCell());
+    protected int directionToBit(Cell cell){
+        return cell.getDirection(cell);
     }
 
-    public boolean canBit(Checker checker){
-        return directionToBit(checker) >= 0;
+    public boolean canBit(Cell cell){
+        return directionToBit(cell) >= 0;
     }
 
-    public void bit(Checker checker){
 
-        int dir = cell.getDirection(checker.getCell());
+    public void bit(Cell cell){
 
-        if (checker.getCell().getCellFromDirection(dir).isFree() && cell.getCellFromDirection(dir).getChecker()==checker){
-            Cell cell = checker.getCell().getCellFromDirection(dir);
+        int dir = cell.getDirection(cell);
+
+        Checker prev = cell.getCellFromDirection(Cell.reversDigection(dir)).getChecker();
+
+        if(cell.isFree() && prev!=null && player.contains(prev)){
             cell.setChecker(this);
             this.cell.setChecker(null);
             this.cell=cell;
-            checker.remove();
+            prev.remove();
         }
+
     }
 
-
+    public Player getPlayer() {
+        return player;
+    }
 
     void remove(){
         player.remove(this);
@@ -109,7 +111,6 @@ public class Checker {
         cell=null;
 
     }
-
 
 
 

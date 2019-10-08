@@ -11,18 +11,26 @@ public class Cell{
     public static final int DOWN_RIGHT = 2;
     public static final int DOWN_LEFT = 3;
 
-    private Cell[] cells = {null, null, null, null};
+    private ArrayList<Cell> cells = new ArrayList <>();
+    {
+        for (int i = 0; i < 4; i++) {
+            cells.add(null);
+        }
+    }
+
 
     private Checker checker = null;
 
-    public void setAll(Cell downLeft, Cell downRight, Cell upLeft, Cell upRight) {
-        cells[UP_RIGHT] = upRight;
-        cells[UP_LEFT] = upLeft;
-        cells[DOWN_RIGHT] = downRight;
-        cells[DOWN_LEFT] = downLeft;
-
+    void setAll(Cell downLeft, Cell downRight, Cell upLeft, Cell upRight) {
+        cells.set(UP_RIGHT,upRight);
+        cells.set(UP_LEFT, upLeft);
+        cells.set(DOWN_LEFT, downLeft);
+        cells.set(DOWN_RIGHT, downRight);
     }
 
+    public ArrayList <Cell> getCells() {
+        return cells;
+    }
     public Checker getChecker() {
         return checker;
     }
@@ -32,7 +40,7 @@ public class Cell{
     }
 
     public Cell getCellFromDirection(int direction){
-        return cells[direction];
+        return cells.get(direction);
     }
 
     public boolean isFree(){return checker == null;}
@@ -40,12 +48,19 @@ public class Cell{
 
 
     public int getDirection(Cell cell){
-        for (int i = 0; i < cells.length; i++) {
-            if (cell!= null && cells[i]!=null && cell.equals(cells[i])){
+        if (cell==null){
+            return -1;
+        }
+        for (int i = 0; i < cells.size(); i++) {
+            if(getAllByDirection(i).contains(cell)){
                 return i;
             }
         }
         return -1;
+    }
+
+    public static int reversDigection(int direction){
+        return Math.abs(3-direction);
     }
 
 
