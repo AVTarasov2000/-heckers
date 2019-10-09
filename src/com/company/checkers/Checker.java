@@ -47,7 +47,7 @@ public class Checker {
 
     public boolean canGoTo(Cell cell){
         int dir = this.cell.getDirection(cell);
-        return player.canGo(dir);
+        return this.cell.getCellFromDirection(dir)==cell && player.canGo(dir);
     }
 
     public boolean canGoAnywhere(){
@@ -66,7 +66,7 @@ public class Checker {
             ArrayList<Cell> list = cell.getAllByDirection(i);
 
             if (list.size()>2 && list.get(0)!=null && list.get(1)!=null){
-                if(!list.get(0).isFree() && list.get(1).isFree() && player.contains(list.get(0).getChecker())){//проверка на то, принадлежат ли они одному игроку
+                if(!list.get(0).isFree() && list.get(1).isFree() && !player.contains(list.get(0).getChecker())){//проверка на то, принадлежат ли они одному игроку
                     return true;
                 }
             }
@@ -78,7 +78,7 @@ public class Checker {
 
 
     protected int directionToBit(Cell cell){
-        return cell.getDirection(cell);
+        return this.cell.getDirection(cell);
     }
 
     public boolean canBit(Cell cell){
@@ -88,11 +88,11 @@ public class Checker {
 
     public void bit(Cell cell){
 
-        int dir = cell.getDirection(cell);
+        int dir = this.cell.getDirection(cell);
 
-        Checker prev = cell.getCellFromDirection(Cell.reversDigection(dir)).getChecker();
+        Checker prev = cell.getCellFromDirection(Cell.reversDirection(dir)).getChecker();
 
-        if(cell.isFree() && prev!=null && player.contains(prev)){
+        if(cell.isFree() && prev!=null && !player.contains(prev)){
             cell.setChecker(this);
             this.cell.setChecker(null);
             this.cell=cell;

@@ -93,7 +93,7 @@ public class Queen extends Checker {
             return;
         }
 
-        Checker prev = cell.getCellFromDirection(Cell.reversDigection(direction)).getChecker();
+        Checker prev = cell.getCellFromDirection(Cell.reversDirection(direction)).getChecker();
         cell.setChecker(this);
 
         prev.remove();

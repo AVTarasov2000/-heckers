@@ -53,6 +53,7 @@ public class Field {
             for (int j = 0; j < size; j++) {
                 if((i+j)%2!=0) {
                     cell = field.get(stringKey(i,j));
+                    cell.setName(stringKey(i,j));
                     cell.setAll(field.getOrDefault(stringKey(i-1,j-1), null),//downLeft
                                 field.getOrDefault(stringKey(i+1,j-1), null),//downRight
                                 field.getOrDefault(stringKey(i-1,j+1), null),//upLeft

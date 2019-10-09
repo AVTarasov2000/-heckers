@@ -6,10 +6,10 @@ import com.company.checkers.Checker;
 import com.company.field.Cell;
 import com.company.field.Field;
 
+import java.util.ArrayList;
 
 
 public class Сheckers {
-//    private int turn = 1;
     private Field field = new Field();
 
     private Player blackPlayer;
@@ -38,18 +38,16 @@ public class Сheckers {
         Checker checker1 = field.getChecker(checker);
         Cell cellTo = field.getCell(to);
 
-        if (checker1==null){
+        if (checker1==null && cellTo==null){
             return;
         }
 
-        if (cellTo.isFree() && !turn.getPlayer().canOnlyBit().contains(checker1)){
+        if (checker1.canGoTo(cellTo) && cellTo.isFree() && !turn.getPlayer().canOnlyBit().contains(checker1)){
             if(!turn.getPlayer().contains(checker1) || turn.getPlayer().cantMove().contains(checker1)){
                 return;
             }
-            if (checker1.canGoTo(cellTo)){
-                checker1.goTo(cellTo);
-                turn.switchTurn();
-            }
+            checker1.goTo(cellTo);
+            turn.switchTurn();
         }else if(checker1.canBit(cellTo)){
                 checker1.bit(cellTo);
                 if(!checker1.canBitAnything()) {

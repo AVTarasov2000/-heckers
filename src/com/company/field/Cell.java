@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class Cell{
 
+    String name;
+
     public static final int UP_RIGHT = 0;
     public static final int UP_LEFT = 1;
     public static final int DOWN_RIGHT = 2;
@@ -18,6 +20,15 @@ public class Cell{
         }
     }
 
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name + '\'';
+    }
 
     private Checker checker = null;
 
@@ -59,7 +70,10 @@ public class Cell{
         return -1;
     }
 
-    public static int reversDigection(int direction){
+    public static int reversDirection(int direction){
+        if (direction<0){
+            return -1;
+        }
         return Math.abs(3-direction);
     }
 

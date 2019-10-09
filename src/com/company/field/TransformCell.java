@@ -11,7 +11,7 @@ public class TransformCell extends Cell{
             super.setChecker(checker);
         }
 
-        if(checker!=null && checker.getPlayer().isTransformCellForThisPlayer(this)){
+        if(checker!=null && checker.getPlayer()!=null && checker.getPlayer().isTransformCellForThisPlayer(this)){
             super.setChecker(checker.transformToQueen());
         }else {
             super.setChecker(checker);
